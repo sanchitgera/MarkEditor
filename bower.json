@@ -1,0 +1,30 @@
+{
+  "name": "markdown",
+  "version": "0.0.1",
+  "authors": [
+    "Sanchit Gera <gerasanchit@gmail.com>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "FileSaver": "*",
+    "bigscreen": "~2.0.5",
+    "bootstrap-material-design": "~0.3.0",
+    "bootstrap": "~3.3.5",
+    "github-markdown-css": "~2.0.9",
+    "highlightjs": "~8.7.0",
+    "lz-string": "~1.4.4",
+    "jspdf": "~1.1.135",
+    "marked": "~0.3.5",
+    "pako": "~0.2.7",
+    "pdfmake": "~0.1.18",
+    "screenfull": "~2.0.0"
+  }
+}

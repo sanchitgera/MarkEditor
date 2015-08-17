@@ -1,0 +1,148 @@
+<head>
+  <title>  MarkEditor </title>
+
+  <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+  <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./bower_components/bootstrap-material-design/dist/css/material.min.css" />
+  <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="./bower_components/highlightjs/highlight.pack.min.js"></script>
+  <link rel="stylesheet" href="./bower_components/highlightjs/styles/github.css" />
+  <link rel="stylesheet" href="./bower_components/github-markdown-css/github-markdown.css" />
+  <script src="./bower_components/FileSaver/FileSaver.min.js"></script>
+
+  <link rel="stylesheet" href="main.css" />
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="col-xs-6 editor-column" id="left">
+      <div class="editor">
+      </div>
+
+    </div>
+    <div class="col-xs-6 preview markdown-body" id="right">
+    </div>
+    <a href="javascript:void(0)" id="savebutton" class="btn btn-primary btn-fab btn-raised mdi-file-cloud-download"></a>
+    <a href="javascript:void(0)" id="somebutton" class="btn btn-danger btn-fab btn-raised mdi-image-crop-free"></a>
+    <a href="javascript:void(0)" id="sharebutton" class="btn btn-danger btn-fab btn-raised mdi-editor-attach-file hidden"></a>
+    <output id="list"></output>
+
+  </div>
+
+  <script src="./CodeMirror/lib/codemirror.js"></script>
+  <link rel="stylesheet" href="./CodeMirror/theme/ambiance.css" />
+  <link rel="stylesheet" href="./CodeMirror/lib/codemirror.css" />
+
+  <script src="./CodeMirror/mode/markdown/markdown.js"></script>
+
+  <script src="./bower_components/marked/lib/marked.js"></script>
+  <script src="./bower_components/bootstrap-material-design/dist/js/material.min.js" />
+
+  <script>
+    $.material.init()
+  </script>
+
+  <script>
+    function syntaxify(parent) {
+      $(parent).find('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    }
+  </script>
+  <script>
+    var updatePreview = function(cm, change) {
+      $('.preview').html(marked(cm.getValue(), {
+        renderer: new marked.Renderer(),
+        gfm: true,
+        tables: true,
+        breaks: true,
+        pedantic: false,
+        sanitize: false,
+        smartLists: true,
+        smartypants: false
+      }));
+      syntaxify($('.preview'));
+    }
+  </script>
+  <script>
+    var myCodeMirror = CodeMirror($('.editor').get(0), {
+      mode: "markdown",
+      scrollbarStyle: "null",
+      lineWrapping: true,
+      matchBrackets: true,
+      theme: "ambiance"
+    });
+    var commandDisplay = document.getElementById('command-display');
+    myCodeMirror.on('change', updatePreview);
+  </script>
+  <script src="./bower_components/screenfull/dist/screenfull.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#somebutton').click(function() {
+        if (screenfull.enabled) {
+          screenfull.toggle();
+        }
+      });
+    });
+  </script>
+  <script>
+  </script>
+  <script>
+    $(document).ready(function() {
+      function SaveAsFile(t,f,m) {
+            try {
+                var b = new Blob([t]);
+                saveAs(b, f);
+            } catch (e) {
+                window.open("data:"+m+"," + encodeURIComponent(t), '_blank','');
+            }
+        }
+
+      $('#savebutton').click(function() {
+        var text = myCodeMirror.getValue();
+        SaveAsFile(text,"untitled.md","text/plain;charset=utf-8");
+      });
+
+      function KeyPress(e) {
+        var evtobj = window.event? event : e
+        if (evtobj.keyCode == 83 && (evtobj.ctrlKey || evtobj.metaKey)) {
+          var text = myCodeMirror.getValue();
+          SaveAsFile(text,"untitled.md","text/plain;charset=utf-8");
+          return false;
+        }
+      }
+
+      document.onkeydown = KeyPress;
+    });
+  </script>
+
+  <script src="./bower_components/lz-string/libs/lz-string.min.js"></script>
+  <script src="./js-deflate/rawinflate.js"></script>
+  <script src="./js-deflate/rawdeflate.js"></script>
+  <script src="./js-deflate/base64.js"></script>
+
+  <script>
+  $("#sharebutton").click(function(){
+    var string = myCodeMirror.getValue();
+    var deflated = Base64.toBase64(RawDeflate.deflate(Base64.utob(string)));
+    var url ='file:///Users/sanchitgera/workspace/markdown/index.html';
+    link = url + "?val=" + deflated;
+  });
+  </script>
+
+  <script>
+  function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
+  }
+  $(document).ready(function(){
+    var myParam = getURLParameter('val');
+    if (myParam) {
+      var inflated = Base64.btou(RawDeflate.inflate(Base64.fromBase64(myParam)));
+      myCodeMirror.setValue(inflated);
+      console.log(myParam);
+    } else {
+      myCodeMirror.setValue('Default Text');
+    }
+  });
+  </script>
+</body>

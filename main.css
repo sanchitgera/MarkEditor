@@ -1,0 +1,47 @@
+#right {
+  height: 100%;
+  overflow: scroll;
+  word-wrap: break-word;
+}
+
+.editor {
+  overflow: scroll;
+}
+
+.CodeMirror-scroll {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.col-xs-6{
+  height: 100%;
+}
+
+.CodeMirror {
+  box-shadow: none !important;
+  height: 100% !important;
+  font-size: 120% !important;
+  /*background-color : #DFDFDF !important;*/
+}
+
+.editor-column {
+  background-color: #202020;
+}
+
+#somebutton {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+#savebutton {
+  position: absolute;
+  bottom: 10px;
+  right: 75px;
+}
+
+#sharebutton {
+  position: absolute;
+  bottom: 10px;
+  right: 140px;
+}

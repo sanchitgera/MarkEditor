@@ -4,7 +4,7 @@ MarkEditor is a web based markdown editor with full-screen support.
 
 The editor uses Github Flavored markdown by default. You can also save files directly to your computer or share links with your friends :)
 
-Here is a [preview](www.sanchitgera.ca/markeditor)
+Here is a [preview](http://www.sanchitgera.ca/markeditor)
 
 The editor itself is built on top of [CodeMirror](https://codemirror.net/). Other libraries used in the project are : 
 - [Marked](https://github.com/chjj/marked)
